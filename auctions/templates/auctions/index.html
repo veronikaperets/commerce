@@ -1,0 +1,41 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+    <h2>Active Listings</h2>
+
+    {% if listings %}
+        <div class="row">
+            {% for listing in listings %}
+                <div class="col-md-4 mb-4">
+                    <div class="card">
+                        {% if listing.image_url %}
+                            <img src="{{ listing.image_url }}" class="card-img-top" alt="{{ listing.title }}">
+                        {% endif %}
+                        <div class="card-body">
+                            <h5 class="card-title">{{ listing.title }}</h5>
+
+                            {% if listing.winner %}
+                                <span class="badge badge-danger">Sold</span>
+                            {% endif %}
+
+                            <p class="card-text">
+                                {% if listing.description|length > 45 %}
+                                    {{ listing.description|slice:":45" }}...
+                                {% else %}
+                                    {{ listing.description }}
+                                {% endif %}
+                            </p>
+                            
+                            <p class="card-text">Current Price: ${{ listing.current_bid }}</p>
+                            
+                            <a href="{% url 'listing_page' listing.id %}" class="btn btn-primary">View Listing</a>
+
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p>No active listings available.</p>
+    {% endif %}
+{% endblock %}
